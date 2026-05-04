@@ -1,1 +1,367 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Хоймор нутгийн соёлын өв</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Manrope', sans-serif; }
+        .hidden { display: none; }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen">
 
+    <!-- Header -->
+    <header class="bg-slate-950 text-white p-5 shadow-2xl flex justify-between items-center sticky top-0 z-50 border-b border-white/5 backdrop-blur-md bg-opacity-95">
+        <div class="flex items-center gap-4">
+            <div class="bg-blue-600 p-2.5 rounded-xl shadow-lg ring-4 ring-blue-500/20">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+                <h1 class="text-sm font-black tracking-widest uppercase leading-none">Хоймор нутгийн соёлын өв</h1>
+                <p class="text-blue-400 text-[10px] mt-1.5 font-bold tracking-[0.2em] uppercase">Хөвсгөл аймаг • Судалгаат аялал</p>
+            </div>
+        </div>
+        <div id="player-status" class="hidden flex items-center gap-3 px-5 py-2 rounded-2xl border border-white/10 shadow-xl transition-all duration-300">
+            <!-- Dynamic player status -->
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-8">
+        <!-- Start Screen -->
+        <div id="screen-start" class="flex flex-col items-center justify-center py-16 text-center animate-fade-in">
+            <div class="w-24 h-24 bg-white rounded-[2.5rem] flex items-center justify-center mb-10 shadow-2xl border-4 border-blue-50">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-700"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+            </div>
+            <h2 class="text-4xl md:text-6xl font-black text-slate-900 mb-8 uppercase tracking-tighter leading-tight max-w-4xl">
+                Хоймор нутгийн соёлын үл хөдлөх<br/>
+                <span class="text-blue-700">өвийн түүхэн аялал</span>
+            </h2>
+            <div class="bg-slate-900 text-white px-8 py-3 rounded-full text-[10px] font-black uppercase mb-10 tracking-[0.3em] flex items-center gap-4 shadow-xl border border-white/5">
+                НИЙТ 24 ТҮҮХЭН ЦЭГ
+            </div>
+            <p class="text-slate-500 max-w-2xl mb-14 text-lg md:text-xl font-medium leading-relaxed italic">
+                "23 сум, 1 тосгоны түүхэн дурсгалт газруудаар аялж, өв соёлын мэдлэгээ сориорой."
+            </p>
+            <button onclick="showScreen('playerSelect')" class="bg-blue-700 hover:bg-blue-800 text-white px-12 py-6 rounded-3xl font-black text-xl shadow-2xl hover:shadow-blue-500/30 transition-all transform hover:-translate-y-1 flex items-center gap-6 group">
+                АЯЛАЛЫГ ЭХЛҮҮЛЭХ <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-2 transition-transform"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+        </div>
+
+        <!-- Player Select Screen -->
+        <div id="screen-playerSelect" class="hidden flex flex-col items-center justify-center py-12 animate-fade-in">
+            <h2 class="text-3xl font-black text-slate-800 mb-12 uppercase tracking-tighter">Аялагчдын тоог сонгох</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 w-full max-w-4xl">
+                <button onclick="setupPlayers(1)" class="bg-white p-12 rounded-[3rem] shadow-xl border-2 border-slate-50 hover:border-blue-600 transition-all flex flex-col items-center gap-8">
+                    <div class="w-16 h-16 rounded-full bg-blue-700 flex items-center justify-center text-white"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                    <span class="text-2xl font-black text-slate-800 uppercase tracking-tighter">1 Аялагч</span>
+                </button>
+                <button onclick="setupPlayers(2)" class="bg-white p-12 rounded-[3rem] shadow-xl border-2 border-slate-50 hover:border-blue-600 transition-all flex flex-col items-center gap-8">
+                    <div class="flex -space-x-4">
+                        <div class="w-16 h-16 rounded-full bg-blue-700 border-4 border-white flex items-center justify-center text-white"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                        <div class="w-16 h-16 rounded-full bg-emerald-700 border-4 border-white flex items-center justify-center text-white"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                    </div>
+                    <span class="text-2xl font-black text-slate-800 uppercase tracking-tighter">2 Аялагч</span>
+                </button>
+                <button onclick="setupPlayers(4)" class="bg-white p-12 rounded-[3rem] shadow-xl border-2 border-slate-50 hover:border-blue-600 transition-all flex flex-col items-center gap-8">
+                    <div class="flex -space-x-4">
+                        <div class="w-16 h-16 rounded-full bg-blue-700 border-4 border-white flex items-center justify-center text-white"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                        <div class="w-16 h-16 rounded-full bg-amber-600 border-4 border-white flex items-center justify-center text-white"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                    </div>
+                    <span class="text-2xl font-black text-slate-800 uppercase tracking-tighter">4 Аялагч</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Exploring Screen -->
+        <div id="screen-exploring" class="hidden space-y-10 animate-fade-in">
+            <div id="player-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Players cards -->
+            </div>
+            <div class="bg-white rounded-[3.5rem] p-8 md:p-12 shadow-xl border border-slate-100">
+                <div class="flex items-center gap-6 mb-10">
+                    <div class="bg-blue-50 p-4 rounded-2xl text-blue-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-black text-slate-900 uppercase tracking-tighter leading-none">Судалгааны цэгээ сонгоно уу</h2>
+                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.4em] mt-2">Хөвсгөл аймгийн бүх сумд</p>
+                    </div>
+                </div>
+                <div id="sum-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+                    <!-- Sum buttons -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Reading Screen -->
+        <div id="screen-reading" class="hidden max-w-4xl mx-auto py-2 animate-fade-in">
+            <div class="bg-white rounded-[4rem] overflow-hidden shadow-2xl border border-slate-200">
+                <div id="sum-header" class="p-12 md:p-20 text-white relative">
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-3 bg-white/20 w-fit px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-8 border border-white/30">МЭДЭЭЛЭЛ</div>
+                        <h2 id="sum-title" class="text-5xl md:text-6xl font-black uppercase tracking-tighter"></h2>
+                        <p id="sum-type" class="text-white/80 font-black uppercase tracking-[0.2em] mt-6 text-sm"></p>
+                    </div>
+                </div>
+                <div class="p-10 md:p-20">
+                    <p id="sum-content" class="leading-relaxed text-slate-800 font-bold text-2xl md:text-3xl tracking-tight mb-12"></p>
+                    <div class="flex flex-col md:flex-row gap-8 items-center justify-between border-t border-slate-100 pt-12">
+                        <button onclick="showScreen('exploring')" class="text-slate-400 font-black uppercase text-[10px] tracking-[0.3em] flex items-center gap-2">БУЦАХ</button>
+                        <button onclick="startQuiz()" id="quiz-start-btn" class="text-white px-16 py-6 rounded-3xl font-black text-xl shadow-xl flex items-center gap-4">ШАЛГАЛТ <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="screen-quiz" class="hidden max-w-2xl mx-auto py-8 animate-fade-in">
+            <div class="bg-white rounded-[4rem] p-12 shadow-2xl border border-slate-200 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-4 bg-slate-100">
+                    <div id="quiz-progress" class="h-full bg-blue-600 transition-all duration-500" style="width: 0%"></div>
+                </div>
+                <div class="flex items-center justify-between mb-12">
+                    <div id="quiz-step-text" class="text-slate-400 font-black text-[10px] uppercase tracking-[0.4em]">АСУУЛТ 1 / 3</div>
+                    <div id="quiz-error" class="hidden text-rose-600 bg-rose-50 px-6 py-2 rounded-xl text-[10px] font-black uppercase">АЛДАА! ДАХИН ОРОЛДОНО УУ</div>
+                </div>
+                <h3 id="quiz-question" class="text-2xl md:text-3xl font-black text-slate-900 mb-12 leading-tight"></h3>
+                <div id="quiz-options" class="space-y-4"></div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="screen-results" class="hidden flex flex-col items-center justify-center py-16 text-center animate-fade-in">
+            <div id="winner-badge" class="w-48 h-48 rounded-[3rem] flex items-center justify-center text-white shadow-2xl mb-12 transform rotate-6 border-8 border-white">
+                <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+            </div>
+            <h2 class="text-5xl md:text-7xl font-black text-slate-900 mb-6 uppercase tracking-tighter">АЯЛАЛ ӨНДӨРЛӨЛӨӨ</h2>
+            <div id="final-rankings" class="grid grid-cols-1 gap-6 w-full max-w-2xl mb-16 mt-8"></div>
+            <button onclick="location.reload()" class="bg-slate-950 text-white px-20 py-8 rounded-[2.5rem] font-black text-2xl shadow-2xl flex items-center gap-8 uppercase tracking-widest">
+                ШИНЭЭР ЭХЛЭХ
+            </button>
+        </div>
+    </main>
+
+    <script>
+        const sumData = [
+            { name: "Мөрөн", type: "Аймгийн төв", content: "Мөрөн хотоос баруун хойш 14 км-т орших Ушгийн өвөр нь Хүрлийн үеийн буган хөшөөдийн хамгийн том цогцолбор юм. Энд 15 буган хөшөө байх бөгөөд хамгийн онцгой нь хөшөөний дээд хэсэгт хүний нүүр сийлсэн дэлхийд ганц ховор олдвор болох 15 дахь хөшөө юм.", questions: [{ q: "Ушгийн өврийн цогцолборт нийт хэдэн буган хөшөө байдаг вэ?", a: ["14 буган хөшөө", "15 буган хөшөө", "20 буган хөшөө"], correct: 1 }, { q: "Ушгийн өврийн хэддүгээр хөшөөнд хүний нүүрний дүрслэл байдаг вэ?", a: ["6 дугаар хөшөө", "1 дүгээр хөшөө", "15 дугаар хөшөө"], correct: 2 }, { q: "Ушгийн өврийн дурсгалт газар нь Хүрлийн үеийн соёлд хамаарагддаг вэ?", a: ["Дөрвөлжин булш", "Хиригсүүр", "Буган хөшөөт соёл"], correct: 2 }] },
+            { name: "Хатгал", type: "Тосгон", content: "Хөвсгөл нуурын өмнөд эрэгт орших түүхэн боомт. 1910 онд Орос-Монголын худалдааны зангилаа болж байгуулагдсан. 'Сүхбаатар' онгоц нь нуурын гол бэлгэдэл юм.", questions: [{ q: "Хатгал дахь анхны уурын онгоц хэдэн онд орсон бэ?", a: ["1910 он", "1932 он", "1921 он"], correct: 1 }, { q: "Гол зорилго юу байсан бэ?", a: ["Загас", "Шувуу", "Цайны замын худалдаа"], correct: 2 }, { q: "Гадагш гардаг ганц гол?", a: ["Эгийн гол", "Үүр гол", "Шишгэд гол"], correct: 0 }] },
+            { name: "Цагааннуур", type: "Тайгын сум", content: "Монгол улсын хамгийн хойд захын сум. Цаатан буюу Духа иргэдийн түүх, соёл, тайгын өв уламжлалыг хадгалж буй газар юм.", questions: [{ q: "Духа хэл ямар язгуурынх вэ?", a: ["Монгол", "Түрэг", "Манж"], correct: 1 }, { q: "Тэсийн голын эх хаана вэ?", a: ["Хорьдол Сарьдаг", "Саяны нуруу", "Булнай"], correct: 1 }, { q: "Урцыг юугаар бүрдэг вэ?", a: ["Эсгий", "Даавуу", "Холтос эсвэл арьс"], correct: 2 }] },
+            { name: "Арбулаг", type: "Түүхэн сум", content: "Их Монгол Улсын Мөнх хааны 1257 онд байгуулсан зуны ордны туурь энд бий. Арслангийн баримал олдсон.", questions: [{ q: "Арслангийн хөшөө хаана байгаа вэ?", a: ["Арбулагт", "Мөрөнгийн музейд", "Үндэсний музейд"], correct: 1 }, { q: "Мөнх хаан хэнээр бариулсан бэ?", a: ["Зөвхөн Монгол", "Олон үндэстний", "Зөвхөн Түвд"], correct: 1 }, { q: "Ямар ястны өлгий вэ?", a: ["Дархад", "Хотогойд", "Халх"], correct: 1 }] },
+            { name: "Цагаан-Үүр", type: "Байгалийн өв", content: "Даян Дээрхийн агуй нь 220 метр урт бөгөөд бөө болон буддын шашны томоохон шүтээн газар юм.", questions: [{ q: "Хэдэн тасалгаатай вэ?", a: ["3", "10 гаруй", "1"], correct: 1 }, { q: "Юуны эзэн савдаг вэ?", a: ["Ан", "Үр хүүхэд ба газар дэлхий", "Аян зам"], correct: 1 }, { q: "Ямар загасны үржлийн гол вэ?", a: ["Цагаан загас", "Тул", "Хилэм"], correct: 1 }] },
+            { name: "Бүрэнтогтох", type: "Соёлын өв", content: "Жаргалантын амны буган хөшөөд нь ЮНЕСКО-ийн Дэлхийн өвд бүртгэгдсэн Хүрлийн үеийн соёлын том дурсгал юм.", questions: [{ q: "Хэдэн буган хөшөө байдаг вэ?", a: ["10", "30 гаруй", "100 гаруй"], correct: 1 }, { q: "Мөрөн хотоос ямар чиглэлд вэ?", a: ["Баруун", "Зүүн", "Хойд"], correct: 0 }, { q: "Орой хэсэгт юу дүрсэлдэг вэ?", a: ["Сар", "Нар", "Од"], correct: 1 }] },
+            { name: "Рашаант", type: "Түүхэн сум", content: "Гэлэнхүүгийн барьсан өвөрмөц хийцтэй суварга энд бий. Тэрээр өөрөө хийсэн жигүүрээр нисэж байсан түүхтэй.", questions: [{ q: "Жигүүрээ юугаар хийсэн бэ?", a: ["Төмөр", "Нэхий", "Өд ба нэхий"], correct: 2 }, { q: "Суварга нь ямар онцлогтой вэ?", a: ["Чулуу", "Гэлэнхүүгийн дүрстэй", "Арслан"], correct: 1 }, { q: "Ямар аймгуудтай хиллэдэг вэ?", a: ["Булган, Архангай", "Завхан", "Дорнод"], correct: 0 }] },
+            { name: "Улаан-Уул", type: "Байгалийн өв", content: "Дархад түмний нутаг. Шишгэд голын сав газар, олон зуун нуур цөөрөмтэй Дархадын хотгорын нэг хэсэг.", questions: [{ q: "Шишгэд гол хаашаа урсдаг вэ?", a: ["Орос", "Хятад", "Казахстан"], correct: 0 }, { q: "Дэлгэрхаан уулын өндөр?", a: ["2500м", "3093м", "4000м"], correct: 1 }, { q: "Ямар онгодыг шүтдэг вэ?", a: ["Очирваань", "Хар дархад онгод", "Даян Дээрх"], correct: 1 }] },
+            { name: "Рэнчинлхүмбэ", type: "Алслагдсан сум", content: "Дархадын хотгорын төв хэсэг. Дархад цагаан загас, Дархад адуугаараа алдартай.", questions: [{ q: "Цагаан загас ямар төрөл вэ?", a: ["Салмон", "Омуль", "Хилэм"], correct: 1 }, { q: "Жаргалант гол хаашаа цутгадаг вэ?", a: ["Баруун эрэг", "Зүүн эрэг", "Шишгэд рүү"], correct: 2 }, { q: "Температур хэд хүрдэг вэ?", a: ["-30", "-45-аас -55", "-20"], correct: 1 }] },
+            { name: "Алаг-Эрдэнэ", type: "Байгалийн өв", content: "Эрхэл нуур нь усны шувуудын томоохон цугларалт юм. Хатгал тосгон энэ сумын нутагт харьяалагддаг.", questions: [{ q: "Ямар шувуу зусдаг вэ?", a: ["Тоодог", "Хун", "Хотон"], correct: 1 }, { q: "Сумын төвийн нэр?", a: ["Хатгал", "Манхан", "Эрдэнэ"], correct: 1 }, { q: "Эрхэл нуурын ус?", a: ["Давстай", "Ширгэдэг", "Цэнгэг/Эрдэс их"], correct: 2 }] },
+            { name: "Төмөрбулаг", type: "Түүхэн сум", content: "Тэсийн голын монхор хониороо алдартай. Тэсийн гол энэ нутгаар дамжин урсдаг.", questions: [{ q: "Монхор хонь юугаараа давуу вэ?", a: ["Ноос", "Мах ба тэсвэр", "Сүү"], correct: 1 }, { q: "Олон голын бэлчир хаана вэ?", a: ["Тэс", "Дэлгэрмөрөн, Идэр", "Эг"], correct: 0 }, { q: "Төмөрбулаг гэж юу вэ?", a: ["Төмөртэй рашаан", "Уурхай", "Төмөр зам"], correct: 0 }] },
+            { name: "Галт", type: "Эмчилгээний өв", content: "Салбарын халуун рашаанаараа алдартай. Газрын гүнээс 40-50 хэмийн халуунтай гардаг.", questions: [{ q: "Найрлагад юу их вэ?", a: ["Төмөр", "Хүхэр", "Зэс"], correct: 1 }, { q: "Хаана байдаг вэ?", a: ["ОХУ талдаа", "Урд, Архангай талд", "Булган талд"], correct: 1 }, { q: "Идэр гол юуны эх вэ?", a: ["Сэлэнгэ", "Энисей", "Амар"], correct: 0 }] },
+            { name: "Шинэ-Идэр", type: "Байгалийн өв", content: "Үзэсгэлэнт байгальтай, Зүүн нуур болон түүний эргэн тойрон дахь түүхэн дурсгалт газруудтай.", questions: [{ q: "Зүүн нуур ямар нуур вэ?", a: ["Давстай", "Цэнгэг", "Ширгэсэн"], correct: 1 }, { q: "Хэдэн онд байгуулагдсан бэ?", a: ["1924", "1956", "1942"], correct: 1 }, { q: "Ямар муж вэ?", a: ["Ой хээр", "Говь", "Өндөр уул"], correct: 0 }] },
+            { name: "Жаргалант", type: "Түүхэн өв", content: "Идэр голын хөвөөнд оршдог. Гүндүгаварлан хийд хэмээх түүхэн том хийдийн туурь энд бий.", questions: [{ q: "Хэдэн онд байгуулагдсан бэ?", a: ["1921", "1750", "1890"], correct: 1 }, { q: "Идэр голын гүүр ямар ач холбогдолтой вэ?", a: ["Аймгийн төв", "Баруун аймгуудыг холбосон", "Загас"], correct: 1 }, { q: "Хэн төрж гарсан бэ?", a: ["Дандар", "Гэлэнхүү", "Шарав"], correct: 1 }] },
+            { name: "Их-Уул", type: "Түүхэн өв", content: "Гурван голын бэлчир энд оршдог. Идэр, Дэлгэрмөрөн, Чулуут голууд нийлж Сэлэнгэ мөрөн болно.", questions: [{ q: "Гуравдагч гол юу вэ?", a: ["Чулуут", "Эг", "Бүгсийн гол"], correct: 2 }, { q: "Гүүр ямар гол дээр вэ?", a: ["Сэлэнгэ", "Идэр", "Тэс"], correct: 0 }, { q: "Булганы ямар сумтай хиллэдэг вэ?", a: ["Хутаг-Өндөр", "Сэлэнгэ", "Тэшиг"], correct: 0 }] },
+            { name: "Тариалан", type: "Газар тариалан", content: "Аймгийн газар тариалангийн гол бүс. Сэлэнгэ мөрний сав газарт улаан буудай тариалдаг.", questions: [{ q: "Аль голын хөндийд вэ?", a: ["Сэлэнгэ ба Бүгс", "Эг", "Тэс"], correct: 0 }, { q: "Анхны юу байгуулагдсан бэ?", a: ["УЦС", "Сангийн аж ахуй", "Төмөр зам"], correct: 1 }, { q: "Сэлэнгэ мөрний өргөн?", a: ["50м", "100-200м", "500м"], correct: 1 }] },
+            { name: "Чандмань-Өндөр", type: "Байгалийн өв", content: "Аригийн голын үзэсгэлэнт хөндийд оршдог. Чингис хааны эх Алангуа эхийн өлгий нутаг гэгддэг.", questions: [{ q: "Хэний өлгий нутаг вэ?", a: ["Алангуа эх", "Гэлэнхүү", "Өгэдэй"], correct: 0 }, { q: "Ямар булантай хиллэдэг вэ?", a: ["Хатгал", "Түрүүгийн булан", "Ханхын булан"], correct: 1 }, { q: "Ямар амьтан элбэг вэ?", a: ["Ирвэс", "Гахай", "Булга"], correct: 2 }] },
+            { name: "Эрдэнэбулган", type: "Түүхэн өв", content: "Эг-Үүрийн бэлчир энд оршдог. Энэ бүс нь дэлхийд тул загасаараа алдартай.", questions: [{ q: "Ямар голтой нийлдэг вэ?", a: ["Үүр гол", "Тэс", "Идэр"], correct: 0 }, { q: "Ямар загасаар алдартай вэ?", a: ["Хилэм", "Тул", "Алтан загас"], correct: 1 }, { q: "Булш олонтой газрын нэр?", a: ["Баянгол", "Шивээт", "Дэлүүний толгой"], correct: 0 }] },
+            { name: "Баянзүрх", type: "Тайгын сум", content: "Бэлтэсийн голын савд оршдог. Дархад соёлын нөлөө ихтэй, байгалийн баялаг ихтэй.", questions: [{ q: "Бэлтэс гол юунд цутгадаг вэ?", a: ["Дэлгэрмөрөн", "Тэс", "Эг"], correct: 0 }, { q: "Алтрага газар юугаар алдартай вэ?", a: ["Загас", "Алт", "Суварга"], correct: 1 }, { q: "Хаана байдаг вэ?", a: ["Зүүн хойд", "Баруун", "Урд"], correct: 1 }] },
+            { name: "Цэцэрлэг", type: "Байгалийн өв", content: "Могойн голын нүүрсний уурхай энд байдаг. Булнайн халуун рашаанаараа алдартай.", questions: [{ q: "Аль аймгийг хангадаг вэ?", a: ["Завхан", "Булган", "Архангай"], correct: 0 }, { q: "Тэсийн гол хаанаас ирдэг вэ?", a: ["Увс", "Завхан", "Булган"], correct: 1 }, { q: "Рашаан юунд тустай вэ?", a: ["Нүд", "Дотор", "Үе мөч"], correct: 2 }] },
+            { name: "Тосонцэнгэл", type: "Түүхэн сум", content: "Сэлэнгэ мөрний эрэгт оршдог. Мөрөн-Булган чиглэлийн зам дагуу байрладаг.", questions: [{ q: "Бетонон гүүр хэдэн метр вэ?", a: ["50м", "200 гаруй", "1 км"], correct: 1 }, { q: "Тосон гэдэг нь юу вэ?", a: ["Газрын тос", "Баян хангай", "Шавар"], correct: 1 }, { q: "Ямар сумтай ойр вэ?", a: ["Их-Уул", "Төмөрбулаг", "Рашаант"], correct: 1 }] },
+            { name: "Түмэн", type: "Уран барилга", content: "Эртний хот суурин, сүм хийдийн туурь хадгалагдсан нутаг юм.", questions: [{ q: "Түмэн хийд ямар урсгалынх вэ?", a: ["Гэлүгба", "Бөө", "Христ"], correct: 0 }, { q: "Түмэн гэж юу вэ?", a: ["Аравт", "10,000 цэрэг", "Зуут"], correct: 1 }, { q: "Байгалийн тогтоц?", a: ["Цөл", "Ой хээр", "Тайга"], correct: 1 }] },
+            { name: "Цагаан-Уул", type: "Түүхэн сум", content: "Сангийн далай давст нуурын эрэгт оршдог. Хотогойдын Чингүнжав вангийн нутаг.", questions: [{ q: "Нуур яагаад давстай вэ?", a: ["Далай", "Урсгалгүй", "Хүмүүс хийсэн"], correct: 1 }, { q: "Ямар ван амьдарч байсан бэ?", a: ["Чингүнжав", "Цэнгүнжав", "Галдан"], correct: 0 }, { q: "Ямар аймагтай хиллэдэг вэ?", a: ["Завхан", "Увс", "Булган"], correct: 0 }] },
+            { name: "Ханх", type: "Хил залгаа сум", content: "Хөвсгөл нуурын хойд эрэгт ОХУ-тай хиллэдэг. Мөнх Сарьдаг оргил (3491м) энд бий.", questions: [{ q: "Аль улстай хил дээр вэ?", a: ["Тува", "Буриад", "Алтай"], correct: 1 }, { q: "Оросын талын боомт?", a: ["Монды", "Кяхта", "Наушки"], correct: 0 }, { q: "Хамгийн гүн цэг хаана вэ?", a: ["Хойд", "Баруун эрэг", "Зүүн"], correct: 1 }] }
+        ];
+
+        let players = [];
+        let currentPlayerIndex = 0;
+        let currentSumIndex = 0;
+        let quizStep = 0;
+        let wrongAnswers = 0;
+        const colors = ['bg-blue-700', 'bg-emerald-700', 'bg-amber-600', 'bg-indigo-700'];
+
+        function showScreen(id) {
+            document.querySelectorAll('main > div').forEach(div => div.classList.add('hidden'));
+            document.getElementById(`screen-${id}`).classList.remove('hidden');
+            
+            // Header status update
+            const status = document.getElementById('player-status');
+            if (id === 'start' || id === 'playerSelect' || id === 'results') {
+                status.classList.add('hidden');
+            } else {
+                status.classList.remove('hidden');
+                updatePlayerStatus();
+            }
+        }
+
+        function updatePlayerStatus() {
+            const p = players[currentPlayerIndex];
+            const status = document.getElementById('player-status');
+            status.className = `flex items-center gap-3 px-5 py-2 rounded-2xl border border-white/10 shadow-xl ${p.color}`;
+            status.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <div class="flex flex-col">
+                    <span class="font-black text-[11px] leading-none uppercase">${p.name}</span>
+                    <span class="text-[10px] text-white/80 font-bold uppercase mt-0.5">${p.score} ОНОО</span>
+                </div>
+            `;
+        }
+
+        function setupPlayers(count) {
+            players = Array.from({ length: count }, (_, i) => ({
+                id: i,
+                name: `Аялагч ${i + 1}`,
+                score: 0,
+                completedSums: [],
+                color: colors[i],
+                isDone: false
+            }));
+            currentPlayerIndex = 0;
+            renderExploring();
+            showScreen('exploring');
+        }
+
+        function renderExploring() {
+            // Render player cards
+            const grid = document.getElementById('player-grid');
+            grid.innerHTML = players.map((p, i) => `
+                <div class="p-6 rounded-3xl border-2 transition-all shadow-sm ${i === currentPlayerIndex ? 'border-blue-600 ring-4 ring-blue-100 bg-white scale-105 z-10' : 'border-slate-200 bg-slate-50 opacity-60'}">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-3 h-3 rounded-full ${p.color}"></div>
+                        <span class="font-black text-[10px] uppercase">${p.name}</span>
+                    </div>
+                    <div class="text-3xl font-black text-slate-900">${p.score} <span class="text-[10px] text-slate-400 font-black uppercase ml-1">оноо</span></div>
+                </div>
+            `).join('');
+
+            // Render sum buttons
+            const sumGrid = document.getElementById('sum-grid');
+            sumGrid.innerHTML = sumData.map((sum, i) => {
+                const isCompleted = players.some(p => p.completedSums.includes(sum.name));
+                return `
+                    <button ${isCompleted ? 'disabled' : `onclick="openSum(${i})"`} class="group p-6 rounded-3xl border-2 transition-all flex flex-col items-center text-center gap-4 ${isCompleted ? 'bg-slate-50 border-slate-100 opacity-20 grayscale cursor-not-allowed' : 'bg-white border-slate-100 hover:border-blue-600 hover:shadow-lg'}">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center ${isCompleted ? 'bg-slate-200 text-slate-400' : 'bg-blue-50 text-blue-700'}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        </div>
+                        <div class="font-black text-sm uppercase tracking-tighter leading-tight">${sum.name}</div>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function openSum(index) {
+            currentSumIndex = index;
+            const sum = sumData[index];
+            const p = players[currentPlayerIndex];
+            
+            document.getElementById('sum-header').className = `${p.color} p-12 md:p-20 text-white relative`;
+            document.getElementById('sum-title').innerText = sum.name + " сум";
+            document.getElementById('sum-type').innerText = sum.type;
+            document.getElementById('sum-content').innerText = sum.content;
+            document.getElementById('quiz-start-btn').className = `${p.color} text-white px-16 py-6 rounded-3xl font-black text-xl shadow-xl flex items-center gap-4 hover:scale-105 transition-transform`;
+            
+            showScreen('reading');
+        }
+
+        function startQuiz() {
+            quizStep = 0;
+            wrongAnswers = 0;
+            renderQuizStep();
+            showScreen('quiz');
+        }
+
+        function renderQuizStep() {
+            const sum = sumData[currentSumIndex];
+            const question = sum.questions[quizStep];
+            
+            document.getElementById('quiz-progress').style.width = `${(quizStep / 3) * 100}%`;
+            document.getElementById('quiz-step-text').innerText = `АСУУЛТ ${quizStep + 1} / 3`;
+            document.getElementById('quiz-question').innerText = question.q;
+            document.getElementById('quiz-error').classList.add('hidden');
+            
+            const options = document.getElementById('quiz-options');
+            options.innerHTML = question.a.map((opt, i) => `
+                <button onclick="handleAnswer(${i})" class="w-full text-left p-8 rounded-3xl border-2 border-slate-100 bg-slate-50 hover:border-blue-600 hover:bg-white transition-all flex items-center justify-between group">
+                    <span class="font-black text-lg text-slate-700">${opt}</span>
+                    <div class="w-8 h-8 rounded-full border-2 border-slate-300 group-hover:border-blue-600 flex items-center justify-center">
+                        <div class="w-4 h-4 rounded-full bg-blue-600 scale-0 group-hover:scale-100 transition-all"></div>
+                    </div>
+                </button>
+            `).join('');
+        }
+
+        function handleAnswer(index) {
+            const sum = sumData[currentSumIndex];
+            const isCorrect = index === sum.questions[quizStep].correct;
+            
+            if (isCorrect) {
+                players[currentPlayerIndex].score += 15;
+                quizStep++;
+                if (quizStep >= 3) {
+                    finishSum();
+                } else {
+                    renderQuizStep();
+                }
+            } else {
+                wrongAnswers++;
+                document.getElementById('quiz-error').classList.remove('hidden');
+                if (wrongAnswers >= 2) {
+                    nextTurn();
+                } else {
+                    quizStep = 0;
+                    setTimeout(renderQuizStep, 1000);
+                }
+            }
+            updatePlayerStatus();
+        }
+
+        function finishSum() {
+            const p = players[currentPlayerIndex];
+            p.score += 25;
+            p.completedSums.push(sumData[currentSumIndex].name);
+            p.isDone = true;
+
+            const everyoneDone = players.every(p => p.isDone || p.completedSums.length >= 1);
+            if (everyoneDone) {
+                showResults();
+            } else {
+                nextTurn();
+            }
+        }
+
+        function nextTurn() {
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+            // Skip finished players if any (simplified)
+            renderExploring();
+            showScreen('exploring');
+        }
+
+        function showResults() {
+            const sorted = [...players].sort((a, b) => b.score - a.score);
+            const winner = sorted[0];
+            
+            document.getElementById('winner-badge').className = `w-48 h-48 rounded-[3rem] ${winner.color} flex items-center justify-center text-white shadow-2xl mb-12 transform rotate-6 border-8 border-white`;
+            
+            const rankDiv = document.getElementById('final-rankings');
+            rankDiv.innerHTML = sorted.map((p, idx) => `
+                <div class="flex items-center justify-between p-8 bg-white rounded-[2.5rem] shadow-xl border border-slate-100 transition-transform hover:scale-[1.02]">
+                    <div class="flex items-center gap-8">
+                        <span class="text-slate-200 font-black text-4xl italic">#${idx+1}</span>
+                        <div class="flex flex-col items-start text-left">
+                            <span class="font-black text-2xl uppercase">${p.name}</span>
+                            <span class="text-[9px] text-slate-400 font-black uppercase">${p.completedSums.length} ЦЭГТ СУДАЛГАА ХИЙСЭН</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="font-black text-4xl text-blue-700">${p.score}</span>
+                        <div class="text-[9px] font-black text-slate-300 uppercase tracking-widest">ОНОО</div>
+                    </div>
+                </div>
+            `).join('');
+            
+            showScreen('results');
+        }
+    </script>
+</body>
+</html>
